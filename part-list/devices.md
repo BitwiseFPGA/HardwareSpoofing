@@ -67,7 +67,6 @@ Recommending Corsair Vengeance ram <mark style="color:green;">all modules have n
 ## Disk drives
 
 * [NO SERIAL Number Drive-512G](https://captaindma.com/product/privacy-drive-no-hwid-no-serial-number-drive-512g/) (<mark style="color:$danger;">Do not recommend this, bad support)</mark>
-* [map1202](https://github.com/dom0ng/map1202) (<mark style="color:$danger;">Do not recommend this, heard bad rumors, untested,</mark> <mark style="color:purple;">might work for EAC games</mark><mark style="color:$danger;">)</mark>
 
 ## Ram spoofing
 

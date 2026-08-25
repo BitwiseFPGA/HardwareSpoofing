@@ -80,9 +80,15 @@ People whom donate will get a special role in our Discord server as a Thank you 
 Supported Anti Cheats
 {% endhint %}
 
-All anti-cheats that does not force fTPM(**CPU**)
+Most anti-cheats that does not force fTPM(**CPU**)
 
-> Our guide is mainly focused on bypassing **EasyAntiCheat - Rust** but it shall work for most games.
+> Not paid EasyAntiCheat (Rust, Apex, Fortnite)\
+> \
+> Might be possible if you have a NVME that is spoofable
+
+> Not vanguard
+
+> Not Faceit
 
 {% hint style="info" icon="microchip" %}
 Supported CPU (CPU no longer matters)
