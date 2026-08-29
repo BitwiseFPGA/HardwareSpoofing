@@ -9,14 +9,13 @@
 * [Step #1](introduction/step-1.md)
 * [Step #2](introduction/step-2.md)
 * [Step #3](introduction/step-3.md)
-* [Step #4](introduction/step-4.md)
 
-## SMBios data
+## Automatic-SMBIOS-Manager
 
-* [Gigabyte](smbios-data/gigabyte.md)
-* [ASRock](smbios-data/asrock.md)
-* [MSI](smbios-data/msi.md)
-* [ASUS](smbios-data/asus.md)
+***
+
+* [Not for ASUS](step-1.md)
+* [Manual ASUS](asus.md)
 
 ## MAC SPOOFING
 

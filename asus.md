@@ -1,9 +1,9 @@
 ---
 description: ASUS = A Surprisingly Unreliable System
-icon: '4'
+icon: face-sad-cry
 ---
 
-# ASUS
+# Manual ASUS
 
 Tools used can be found on the GitHub in [release section](https://github.com/GoofyNest/HardwareSpoofing/releases), if you have issues sometimes its required to downgrade bios version or reinstall windows.
 
