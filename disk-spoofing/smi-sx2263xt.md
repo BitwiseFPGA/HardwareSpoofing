@@ -1,6 +1,6 @@
 ---
 description: Thanks to @lena6168 at discord
-icon: '1'
+icon: broom
 ---
 
 # SMI SX2263XT

@@ -24,6 +24,7 @@
 
 ## DISK SPOOFING
 
+* [Sabrent (EC-SVNE)](disk-spoofing/sabrent-ec-svne.md)
 * [SMI SX2263XT](disk-spoofing/smi-sx2263xt.md)
 
 ## RAM SPOOFING

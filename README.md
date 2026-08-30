@@ -82,13 +82,7 @@ Supported Anti Cheats
 
 Most anti-cheats that does not force fTPM(**CPU**)
 
-> Not paid EasyAntiCheat (Rust, Apex, Fortnite)\
-> \
-> Might be possible if you have a NVME that is spoofable
-
-> Not vanguard
-
-> Not Faceit
+<table><thead><tr><th>AntiCheat</th><th>Game(s)</th><th>Status</th><th valign="top">Last issue</th></tr></thead><tbody><tr><td>EasyAntiCheat</td><td>Rust</td><td><span data-gb-custom-inline data-tag="emoji" data-code="1f7e2">🟢</span>Undetected</td><td valign="top"><em>—</em> 8/16/26 (RAID 0, NVRAM)</td></tr><tr><td>EasyAntiCheat</td><td>Apex</td><td><span data-gb-custom-inline data-tag="emoji" data-code="1f7e2">🟢</span>Undetected</td><td valign="top"><em>—</em> 8/16/26 (RAID 0, NVRAM)</td></tr><tr><td>EasyAntiCheat</td><td>Fortnite</td><td><span data-gb-custom-inline data-tag="emoji" data-code="1f7e1">🟡</span>Unknown</td><td valign="top"></td></tr><tr><td>BattlEye</td><td>All</td><td><span data-gb-custom-inline data-tag="emoji" data-code="1f7e2">🟢</span>Undetected</td><td valign="top"></td></tr></tbody></table>
 
 {% hint style="info" icon="microchip" %}
 Supported CPU (CPU no longer matters)
