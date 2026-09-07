@@ -5,7 +5,7 @@ description: >-
 icon: '2'
 ---
 
-# Step #2
+# Important information
 
 ## NVRAM #1 <mark style="color:$danger;">(Will Cause Issues)</mark>
 
@@ -17,7 +17,7 @@ Unlike normal RAM, which loses its contents when power is removed, NVRAM is desi
 
 In my testing with EAC/Rust, leaving these variables intact consistently resulted in the previous device identity persisting across disk wipes, partition removal, and factory resets.
 
-Windows create multiple keys in your NVRam, some of them are:
+**Windows create multiple keys in your NVRam, some of them are:**
 
 1. UnlockIDCopy
 2. OfflineUniqueIDRandomSeed
@@ -26,62 +26,127 @@ Windows create multiple keys in your NVRam, some of them are:
 5. OfflineUniqueIDEKPubCRC (TPM related)
 6. Boot0001-Boot0006
 
+**ASRock has some unique keys as well:**
+
+1. DmiVar\*-\*
+2. MacAddrVar-\*
+
 Not clearing them will result in OfflineUniqueIDRandomSeed & OfflineUniqueIDRandomSeedCRC containing unique information across factory resets, no matter if you destroy raid, format disks, remove partitions. It will stay in NVRam.
 
-I have tested all known methods to flash NVRam and controlled the information with Linux and the 2 options you have is
+***
 
-* A) Bios downgrade, Bios upgrade
-* B) Clearing the keys manually in Linux terminal
+### Best way to clear NVRAM
 
-#### Potential ways to clearing NVRAM
+{% stepper %}
+{% step %}
+### Correct steps are:
 
-It is very important that you do not boot into windows after clearing NVRAM, this should be done as the LAST step after you are completely spoofed.
+* Make sure the system is fully prepared for the new installation.
+* Disconnect any storage devices that should not be involved.
+* Flash bios
+* Clear NVRAM
+* Proceed directly with the clean installation.
+{% endstep %}
 
-<mark style="color:$danger;">If you remove the keys or flash bios and then boot into Windows afterwards you are compromised again.</mark>
+{% step %}
+### Step 1: Unplug External Storage and Remove Windows
 
-**1. Flash back&#x20;**<mark style="color:blue;">**(Not guaranteed to work)**</mark>
+> **Important:** Before clearing NVRAM, disconnect all storage devices that will not be used for the new installation.
 
-Download the oldest possible version of your BIOS that <mark style="color:$danger;">supports</mark> your <mark style="color:$danger;">CPU</mark> if you are unsure just message an AI for help like ChatGPT your motherboard model, CPU model and ask what the oldest bios version is that supports this CPU.
+Unplug or physically disconnect:
 
-<mark style="color:$danger;">(VERY IMPORTANT) to manually check so the AI is not lying.</mark>
+* USB flash drives
+* External hard drives
+* SATA SSDs/HDDs
+* Additional NVMe drives
+* Any other removable storage devices
+{% endstep %}
 
-Remember that after flashing BIOS that all your settings will go back to factory defaults leaving TPM enabled and other changes you might have done.
+{% step %}
+### Step 2: Flashing BIOS
 
-It is very important that you go over your settings and disable this:
+Download the **oldest BIOS version that supports your CPU**.
 
-* Disable onboard ethernet(not needed if you spoof onboard NIC)
-* Disable BT/WIFI
+If you are unsure which version you need, you can ask an AI such as ChatGPT by providing your **motherboard model and CPU model** and asking which BIOS version is the oldest that supports your CPU.
+
+> **VERY IMPORTANT:** Always verify the information yourself using your motherboard manufacturer's official BIOS/CPU compatibility documentation. Do not rely solely on AI-generated information.
+
+After flashing the BIOS, your BIOS settings will be reset to their **factory defaults**. This means settings such as TPM, Secure Boot, CSM, XMP, and other options may be changed from their previous configuration.
+
+It is therefore important to go through your BIOS settings again and configure the following:
+
+* Disable onboard Ethernet _(not required if you are spoofing the onboard NIC)_
+* Disable Bluetooth/Wi-Fi
 * Disable TPM
 * Disable Security Device
-* Disable onboard sound card
-* Disable onboard graphics (if ur cpu has it)
-* Setup XMP and any overclocking if you have it
+* Disable onboard audio
+* Disable onboard graphics _(if your CPU has integrated graphics)_
+* Enable XMP and configure any desired overclocking settings
 * Disable CSM
-* Enable Secure boot
-* Set Secure boot to custom
-* Restore factory keys
-* Restart pc
+* Enable Secure Boot
+* Set Secure Boot mode to **Custom**
+* Restore the factory Secure Boot keys
+* Save your changes and restart the PC
+{% endstep %}
 
-&#x20;**2. Creating Linux bootable USB**
-
-_<mark style="color:pink;">**I do not recommend or condone messing with this, safest option is to flashback then manually verify that they keys are deleted in a Linux installation.**</mark>_
+{% step %}
+### Step 3: **Creating Linux bootable USB**
 
 I will not share the detail of creating the USB, however I was using Ubuntu 22.04 LTS for these commands
+{% endstep %}
 
-List all the keys
+{% step %}
+### Step 4: Removing Windows / Partitions
+
+[reinstall.md](../windows/reinstall.md "mention")
+
+* Pick a windows from the guide
+* Create the USB (If using NVME enclosure follow this: [sabrent-ec-svne.md](../disk-spoofing/sabrent-ec-svne.md "mention")
+* Follow **#Removing partitions** (If using NVME enclosure follow this: [sabrent-ec-svne.md](../disk-spoofing/sabrent-ec-svne.md "mention")
+{% endstep %}
+
+{% step %}
+### Step 5: Clearing NVRam
+
+> **IMPORTANT:** Do **not** boot into Windows after clearing NVRAM.\
+> \
+> Clearing NVRAM should be performed as the **final step**, after you have completed all other required changes.
+>
+> If you remove EFI variables or make BIOS changes and then boot into Windows afterward, Windows or the firmware may recreate or modify certain configuration data.
+
+
+
+**1. Boot into Linux**
+
+Plug in the Linux USB you created earlier and boot the PC from it.
+
+Become root:
+
+```shellscript
+sudo su
+```
+
+**2. List the EFI variables**
 
 ```shellscript
 ls /sys/firmware/efi/efivars/
 ```
 
-Read the data (if you want to confirm my testing):
+**3. Read the variables**
+
+If you want to inspect the variables before making any changes, you can use:
 
 ```shellscript
 sudo xxd /sys/firmware/efi/efivars/OfflineUniqueIDRandomSeed-*
 sudo xxd /sys/firmware/efi/efivars/OfflineUniqueIDRandomSeedCRC-*
 sudo xxd /sys/firmware/efi/efivars/UnlockIDCopy-*
-sudo xxd /sys/firmware/efi/efivars/OfflineUniqueIDRandomSeed-*
 sudo xxd /sys/firmware/efi/efivars/OfflineUniqueIDEKPubCRC-*
+sudo xxd /sys/firmware/efi/efivars/MacAddrVar-*
+```
+
+To inspect the relevant `Boot` variables:
+
+```shellscript
 for f in /sys/firmware/efi/efivars/Boot000[1-6]-*; do
     echo "==== $f ===="
     sudo xxd "$f"
@@ -89,15 +154,31 @@ for f in /sys/firmware/efi/efivars/Boot000[1-6]-*; do
 done
 ```
 
-Remove the Linux immutable attribute (`i`)
+To inspect the `DmiVar` variables:
+
+```shellscript
+for f in /sys/firmware/efi/efivars/DmiVar-*; do
+    echo "==== $f ===="
+    sudo xxd "$f"
+    echo
+done
+```
+
+**4. Remove the Linux immutable attribute**
+
+Some EFI variables may have the Linux immutable (`i`) attribute set. Remove it before attempting to delete the variables:
 
 ```shellscript
 sudo chattr -i /sys/firmware/efi/efivars/OfflineUniqueIDRandomSeed-*
 sudo chattr -i /sys/firmware/efi/efivars/OfflineUniqueIDRandomSeedCRC-*
 sudo chattr -i /sys/firmware/efi/efivars/UnlockIDCopy-*
-sudo chattr -i /sys/firmware/efi/efivars/OfflineUniqueIDRandomSeed-*
 sudo chattr -i /sys/firmware/efi/efivars/OfflineUniqueIDEKPubCRC-*
+sudo chattr -i /sys/firmware/efi/efivars/MacAddrVar-*
+```
 
+For the `Boot` variables:
+
+```shellscript
 for f in /sys/firmware/efi/efivars/Boot000[1-6]-*; do
     echo "==== $f ===="
     sudo chattr -i "$f"
@@ -105,15 +186,29 @@ for f in /sys/firmware/efi/efivars/Boot000[1-6]-*; do
 done
 ```
 
-Remove the keys
+For the `DmiVar` variables:
+
+```shellscript
+for f in /sys/firmware/efi/efivars/DmiVar-*; do
+    echo "==== $f ===="
+    sudo chattr -i "$f"
+    echo "done"
+done
+```
+
+**5. Remove the selected EFI variables**
 
 ```shellscript
 sudo rm /sys/firmware/efi/efivars/OfflineUniqueIDRandomSeed-*
 sudo rm /sys/firmware/efi/efivars/OfflineUniqueIDRandomSeedCRC-*
 sudo rm /sys/firmware/efi/efivars/UnlockIDCopy-*
-sudo rm /sys/firmware/efi/efivars/OfflineUniqueIDRandomSeed-*
 sudo rm /sys/firmware/efi/efivars/OfflineUniqueIDEKPubCRC-*
+sudo rm /sys/firmware/efi/efivars/MacAddrVar-*
+```
 
+Remove the selected `Boot` variables:
+
+```shellscript
 for f in /sys/firmware/efi/efivars/Boot000[1-6]-*; do
     echo "==== $f ===="
     sudo rm "$f"
@@ -121,20 +216,42 @@ for f in /sys/firmware/efi/efivars/Boot000[1-6]-*; do
 done
 ```
 
-***
+Remove the selected `DmiVar` variables:
 
-## NRAM #2 (<mark style="color:pink;">Potential issue</mark>)
+```shellscript
+for f in /sys/firmware/efi/efivars/DmiVar-*; do
+    echo "==== $f ===="
+    sudo rm "$f"
+    echo "done"
+done
+```
 
-Doing some more digging I found something very interesting in the boot order that saves to NVRam:
+> **WARNING:** EFI variables are firmware configuration data. Deleting the wrong variables can affect boot configuration or other firmware functionality. Only remove variables that you have verified are safe to remove for your specific motherboard/firmware.
 
-<figure><img src="../.gitbook/assets/image (78).png" alt=""><figcaption></figcaption></figure>
+**6. Shut down the PC**
 
-1. This is my USB devices that I had plugged in that have a bootloader
-2. Example USB Flashdrives (what you using to reinstall windows)
+When you are finished, disconnect all removable storage:
 
-This is not known to yet cause issues for **EasyAntiCheat - Rust** but its very bad if you do not clear this after installing Windows.
+* **Unplug all USB flash drives**, including the Linux USB.
+* **Disconnect any storage devices that should not be present during the installation.**
 
-<mark style="color:violet;">I recommend flashing Bios another time after reinstalling windows just to ensure no other disk serial is leaking here.</mark>
+Then shut down the system:
+
+```shellscript
+shutdown -h now
+```
+{% endstep %}
+
+{% step %}
+### Final step
+
+Do **not** boot back into Windows at this point.
+
+Only power the PC back on when you are ready to proceed with the intended installation.
+
+> **Do not flash the BIOS again after clearing the EFI variables**, unless you have a specific reason to do so. A BIOS flash can reset or recreate firmware variables and therefore changes the state you just configured.
+{% endstep %}
+{% endstepper %}
 
 ***
 
@@ -284,6 +401,10 @@ The cheapest fuser you can purchase is a `DICHEN 2k FUSER` which can be found in
 
 Spoofing Disks is now a requirement, Raid 0, Raidable is no longer working for EasyAntiCheat - Rust
 
+Very cheap and reliable (works for now) (support any nvme)
+
+{% embed url="https://goofynest.gitbook.io/spoof/disk-spoofing/sabrent-ec-svne" %}
+
 You can test this:
 
 {% embed url="https://goofynest.gitbook.io/spoof/disk-spoofing/smi-sx2263xt" %}
@@ -291,8 +412,6 @@ You can test this:
 Or this:
 
 {% embed url="https://captaindma.com/product/privacy-drive-no-hwid-no-serial-number-drive-512g/" %}
-
-We will be releasing another alternative soon but requires testing.
 
 ***
 

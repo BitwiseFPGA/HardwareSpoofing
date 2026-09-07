@@ -6,9 +6,9 @@
 
 ## Introduction
 
-* [Step #1](introduction/step-1.md)
-* [Step #2](introduction/step-2.md)
-* [Step #3](introduction/step-3.md)
+* [Basic Learning](introduction/step-1.md)
+* [Important information](introduction/step-2.md)
+* [Device restriction](introduction/step-3.md)
 
 ## Automatic-SMBIOS-Manager
 
