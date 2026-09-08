@@ -24,12 +24,12 @@ In my testing with EAC/Rust, leaving these variables intact consistently resulte
 3. OfflineUniqueIDRandomSeedCRC
 4. OfflineUniqueIDEKPub (TPM related)
 5. OfflineUniqueIDEKPubCRC (TPM related)
-6. Boot0001-Boot0006
 
-**ASRock has some unique keys as well:**
+**Bios generated vars:**
 
 1. DmiVar\*-\*
 2. MacAddrVar-\*
+3. Boot0001-Boot0006
 
 Not clearing them will result in OfflineUniqueIDRandomSeed & OfflineUniqueIDRandomSeedCRC containing unique information across factory resets, no matter if you destroy raid, format disks, remove partitions. It will stay in NVRam.
 
